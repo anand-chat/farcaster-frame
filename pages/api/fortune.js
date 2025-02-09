@@ -19,7 +19,18 @@ export default function handler(req, res) {
 
         if (req.method === 'GET') {
             console.log("GET request successful.");
-            return res.status(200).json({ status: "API is working!", exampleFortune: fortunes[0] });
+            return res.status(200).send(`
+                <html>
+                    <head>
+                        <meta property="og:title" content="Farcaster Fortune Cookie" />
+                        <meta property="og:description" content="Click to reveal your on-chain fate." />
+                        <meta property="fc:frame" content="vNext" />
+                        <meta property="fc:frame:button:1" content="Reveal Fate" />
+                        <meta property="fc:frame:post_url" content="https://farcaster-frame-anand-chats-projects.vercel.app/api/fortune" />
+                    </head>
+                    <body></body>
+                </html>
+            `);
         } 
         
         if (req.method === 'POST') {
