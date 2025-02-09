@@ -28,7 +28,13 @@ export default function handler(req, res) {
                         <meta property="fc:frame:button:1" content="Reveal Fate" />
                         <meta property="fc:frame:post_url" content="https://farcaster-frame-anand-chats-projects.vercel.app/api/fortune" />
                     </head>
-                    <body></body>
+                    <body>
+                        <div style="text-align: center; padding: 50px;">
+                            <h1>Farcaster Fortune Cookie 🔮</h1>
+                            <p>Click the button in Farcaster to reveal your crypto fortune.</p>
+                            <p>If you see this page, your Frame metadata is working!</p>
+                        </div>
+                    </body>
                 </html>
             `);
         } 
