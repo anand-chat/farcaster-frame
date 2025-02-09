@@ -15,15 +15,19 @@ const fortunes = [
 ];
 
 export default function handler(req, res) {
-    if (req.method === 'GET') {
-        // Test endpoint to verify API is working
-        res.status(200).json({ status: "API is working!", exampleFortune: fortunes[0] });
-    } else if (req.method === 'POST') {
-        sdk.actions.ready();
-        const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-        res.status(200).json({ message: randomFortune });
-    } else {
-        res.setHeader('Allow', ['GET', 'POST']);
-        res.status(405).json({ error: "Method not allowed" });
+    try {
+        if (req.method === 'GET') {
+            // Test endpoint to verify API is working
+            return res.status(200).json({ status: "API is working!", exampleFortune: fortunes[0] });
+        } else if (req.method === 'POST') {
+            const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            return res.status(200).json({ message: randomFortune });
+        } else {
+            res.setHeader('Allow', ['GET', 'POST']);
+            return res.status(405).json({ error: "Method not allowed" });
+        }
+    } catch (error) {
+        console.error("Error in API:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
