@@ -1,14 +1,5 @@
-import express from 'express';
-import cors from 'cors';
+// pages/api/fortune.js
 import sdk from '@farcaster/frame-sdk';
-import { createConfig, http, WagmiProvider } from 'wagmi';
-import { base } from 'wagmi/chains';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(cors());
 
 const fortunes = [
     "The mempool is on your side. Move accordingly.",
@@ -23,39 +14,24 @@ const fortunes = [
     "Hold conviction, not bags."
 ];
 
-const config = createConfig({
-    chains: [base],
-    transports: {
-        [base.id]: http(),
+export default function handler(req, res) {
+    if (req.method === 'POST') {
+        sdk.actions.ready();
+        const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+        res.status(200).json({ message: randomFortune });
+    } else {
+        res.setHeader('Content-Type', 'text/html');
+        res.status(200).send(`
+            <html>
+                <head>
+                    <meta property="og:title" content="Farcaster Fortune Cookie" />
+                    <meta property="og:description" content="Click to reveal your on-chain fate." />
+                    <meta property="fc:frame" content="vNext" />
+                    <meta property="fc:frame:button:1" content="Reveal Fate" />
+                    <meta property="fc:frame:post_url" content="https://your-vercel-project.vercel.app/api/fortune" />
+                </head>
+                <body></body>
+            </html>
+        `);
     }
-});
-
-const queryClient = new QueryClient();
-
-// Route to serve the Frame metadata
-app.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.send(`
-        <html>
-            <head>
-                <meta property="og:title" content="Farcaster Fortune Cookie" />
-                <meta property="og:description" content="Click to reveal your on-chain fate." />
-                <meta property="fc:frame" content="vNext" />
-                <meta property="fc:frame:button:1" content="Reveal Fate" />
-                <meta property="fc:frame:post_url" content="https://yourdomain.com/fortune" />
-            </head>
-            <body></body>
-        </html>
-    `);
-});
-
-// Handle interactions
-app.post('/fortune', (req, res) => {
-    sdk.actions.ready();
-    const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-    res.json({ message: randomFortune });
-});
-
-app.listen(PORT, () => {
-    console.log(`Farcaster Fortune Cookie Frame running on port ${PORT}`);
-});
+}
