@@ -1,5 +1,4 @@
 // pages/api/fortune.js
-import sdk from '@farcaster/frame-sdk';
 
 const fortunes = [
     "The mempool is on your side. Move accordingly.",
@@ -16,18 +15,25 @@ const fortunes = [
 
 export default function handler(req, res) {
     try {
+        console.log("Request received:", req.method);
+
         if (req.method === 'GET') {
-            // Test endpoint to verify API is working
+            console.log("GET request successful.");
             return res.status(200).json({ status: "API is working!", exampleFortune: fortunes[0] });
-        } else if (req.method === 'POST') {
+        } 
+        
+        if (req.method === 'POST') {
             const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            console.log("POST request successful. Fortune:", randomFortune);
             return res.status(200).json({ message: randomFortune });
-        } else {
-            res.setHeader('Allow', ['GET', 'POST']);
-            return res.status(405).json({ error: "Method not allowed" });
-        }
+        } 
+        
+        console.log("Invalid method:", req.method);
+        res.setHeader('Allow', ['GET', 'POST']);
+        return res.status(405).json({ error: "Method not allowed" });
+
     } catch (error) {
-        console.error("Error in API:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
+        console.error("🔥 ERROR in API:", error);
+        return res.status(500).json({ error: "Internal Server Error", details: error.message });
     }
 }
