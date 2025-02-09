@@ -1,0 +1,61 @@
+import express from 'express';
+import cors from 'cors';
+import sdk from '@farcaster/frame-sdk';
+import { createConfig, http, WagmiProvider } from 'wagmi';
+import { base } from 'wagmi/chains';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+
+const fortunes = [
+    "The mempool is on your side. Move accordingly.",
+    "You’re early. The exit liquidity isn’t here yet.",
+    "Code is law. Play by the rules you write.",
+    "Your next block is already written. Stack wisely.",
+    "Liquidity is a mirage. Stay solvent.",
+    "Decentralization is a spectrum. Choose your trust wisely.",
+    "Blocks don’t wait. Neither should you.",
+    "The best trades aren’t on the timeline.",
+    "There are no free lunches, only asymmetric bets.",
+    "Hold conviction, not bags."
+];
+
+const config = createConfig({
+    chains: [base],
+    transports: {
+        [base.id]: http(),
+    }
+});
+
+const queryClient = new QueryClient();
+
+// Route to serve the Frame metadata
+app.get('/', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.send(`
+        <html>
+            <head>
+                <meta property="og:title" content="Farcaster Fortune Cookie" />
+                <meta property="og:description" content="Click to reveal your on-chain fate." />
+                <meta property="fc:frame" content="vNext" />
+                <meta property="fc:frame:button:1" content="Reveal Fate" />
+                <meta property="fc:frame:post_url" content="https://yourdomain.com/fortune" />
+            </head>
+            <body></body>
+        </html>
+    `);
+});
+
+// Handle interactions
+app.post('/fortune', (req, res) => {
+    sdk.actions.ready();
+    const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+    res.json({ message: randomFortune });
+});
+
+app.listen(PORT, () => {
+    console.log(`Farcaster Fortune Cookie Frame running on port ${PORT}`);
+});
