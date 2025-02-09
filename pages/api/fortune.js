@@ -15,23 +15,15 @@ const fortunes = [
 ];
 
 export default function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'GET') {
+        // Test endpoint to verify API is working
+        res.status(200).json({ status: "API is working!", exampleFortune: fortunes[0] });
+    } else if (req.method === 'POST') {
         sdk.actions.ready();
         const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
         res.status(200).json({ message: randomFortune });
     } else {
-        res.setHeader('Content-Type', 'text/html');
-        res.status(200).send(`
-            <html>
-                <head>
-                    <meta property="og:title" content="Farcaster Fortune Cookie" />
-                    <meta property="og:description" content="Click to reveal your on-chain fate." />
-                    <meta property="fc:frame" content="vNext" />
-                    <meta property="fc:frame:button:1" content="Reveal Fate" />
-                    <meta property="fc:frame:post_url" content="https://your-vercel-project.vercel.app/api/fortune" />
-                </head>
-                <body></body>
-            </html>
-        `);
+        res.setHeader('Allow', ['GET', 'POST']);
+        res.status(405).json({ error: "Method not allowed" });
     }
 }
