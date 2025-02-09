@@ -19,7 +19,8 @@ export default function handler(req, res) {
 
         if (req.method === 'GET') {
             console.log("GET request successful.");
-            res.setHeader("Content-Type", "text/html"); // Make sure Warpcast detects this
+            res.setHeader("Content-Type", "text/html"); // Ensure Warpcast detects it
+
             return res.status(200).send(`
                 <html>
                     <head>
@@ -29,8 +30,8 @@ export default function handler(req, res) {
                         <meta property="fc:frame:button:1" content="Reveal Fate" />
                         <meta property="fc:frame:post_url" content="https://farcaster-frame-livid.vercel.app/api/fortune" />
                     </head>
-                    <body>
-                        <div style="text-align: center; padding: 50px;">
+                    <body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+                        <div style="text-align: center;">
                             <h1>🔮 Farcaster Fortune Cookie</h1>
                             <p>Click the button in Farcaster to reveal your on-chain fate.</p>
                             <p>If you see this page, your Frame metadata is working!</p>
