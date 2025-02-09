@@ -19,8 +19,7 @@ export default function handler(req, res) {
 
         if (req.method === 'GET') {
             console.log("GET request successful.");
-            res.setHeader("Content-Type", "text/html"); // Ensure it's recognized as HTML
-
+            res.setHeader("Content-Type", "text/html"); // Make sure Warpcast detects this
             return res.status(200).send(`
                 <html>
                     <head>
