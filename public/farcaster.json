@@ -1,0 +1,12 @@
+{
+  "frame": {
+    "version": "1",
+    "name": "Farcaster Fortune Cookie",
+    "homeUrl": "https://farcaster-frame-anand-chats-projects.vercel.app/",
+    "iconUrl": "https://farcaster-frame-anand-chats-projects.vercel.app/icon.png",
+    "imageUrl": "https://farcaster-frame-anand-chats-projects.vercel.app/frame-image.png",
+    "buttonTitle": "🔮 Reveal Fate",
+    "splashImageUrl": "https://farcaster-frame-anand-chats-projects.vercel.app/splash.png",
+    "splashBackgroundColor": "#FFFFFF"
+  }
+}
